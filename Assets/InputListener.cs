@@ -7,9 +7,12 @@ public class InputListener : MonoBehaviour {
     public GameObject spawnObject;
     private CircleCollider2D spawnCollider;
     private bool wellVisible = false;
+    private int gameBoundsID;
+
     // Use this for initialization
     void Start () {
         spawnCollider = spawnObject.GetComponent<CircleCollider2D>();
+        gameBoundsID = LayerMask.NameToLayer("GameBounds");
     }
 	
 	// Update is called once per frame
@@ -77,14 +80,30 @@ public class InputListener : MonoBehaviour {
     {
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 1;
-        if (CollidesWithSpawnObject(mousePos, spawnCollider.radius))
+        if (OutsideBox(mousePos))
         {
             return;
         }
+        /*
+        if (ObjectInTheWay(mousePos, spawnCollider.radius))
+        {
+            return;
+        }
+        */
         var gravWell = Instantiate(spawnObject, mousePos, Quaternion.identity) as GameObject;
     }
 
-    private bool CollidesWithSpawnObject(Vector3 pos, float radius)
+    private bool OutsideBox(Vector2 mousePos)
+    {
+        if (GameVars.maxBounds.Contains(mousePos))
+        {
+            Debug.Log("Point");
+            return false;
+        }
+        return true;
+    }
+
+    private bool ObjectInTheWay(Vector3 pos, float radius)
     {
         Collider2D[] collisions = Physics2D.OverlapCircleAll(pos, radius);
         if (collisions.Length > 0)

@@ -7,5 +7,5 @@ public class GameVars {
     public static List<GameObject> resourceNodes = new List<GameObject>();
     public static List<GameObject> outerResourceNodes = new List<GameObject>();
     public static int playerMoney = 0;
-    public static Vector2 maxBounds;
+    public static Rect maxBounds;
 }

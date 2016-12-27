@@ -5,6 +5,7 @@ public class Game : MonoBehaviour
 {
     public CameraController camera;
     private BoxCollider2D gameBounds;
+
     private float boundPadding = 1;
     public void Awake()
     {
@@ -22,6 +23,7 @@ public class Game : MonoBehaviour
                 }
             }
         }
+        GameVars.maxBounds = new Rect(gameBounds.offset - gameBounds.size / 2, gameBounds.size);
     }
 
     // Use this for initialization
@@ -49,6 +51,13 @@ public class Game : MonoBehaviour
         var height = Mathf.Max(hi + hn, gameBounds.size.y);
         gameBounds.offset = new Vector2(Mathf.Sign(nodePos.x) * (width - gameBounds.size.x) / 2, Mathf.Sign(nodePos.y) * (height - gameBounds.size.y) / 2);
         gameBounds.size = new Vector2(width, height);
+        GameVars.maxBounds = new Rect(gameBounds.offset - gameBounds.size / 2, gameBounds.size);     
+    }
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = new Color(1, 0, 0, 0.2F);
+        Gizmos.DrawCube(gameBounds.offset, gameBounds.size);
     }
 
     private Vector2 FindClosestNode()
@@ -69,7 +78,6 @@ public class Game : MonoBehaviour
 
     public void OnTriggerExit2D(Collider2D collision)
     {
-
+        Destroy(collision.gameObject);
     }
-
 }
