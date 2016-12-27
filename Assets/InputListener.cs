@@ -84,12 +84,10 @@ public class InputListener : MonoBehaviour {
         {
             return;
         }
-        /*
         if (ObjectInTheWay(mousePos, spawnCollider.radius))
         {
             return;
         }
-        */
         var gravWell = Instantiate(spawnObject, mousePos, Quaternion.identity) as GameObject;
     }
 
@@ -97,7 +95,6 @@ public class InputListener : MonoBehaviour {
     {
         if (GameVars.maxBounds.Contains(mousePos))
         {
-            Debug.Log("Point");
             return false;
         }
         return true;

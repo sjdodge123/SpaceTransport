@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Game : MonoBehaviour
 {
     public CameraController camera;
+    public List<int> levels;
+    public GameObject spawnBase;
     private BoxCollider2D gameBounds;
-
     private float boundPadding = 1;
+    private int currentLevel = 0;
+
     public void Awake()
     {
         gameBounds = GetComponentInChildren<BoxCollider2D>();
@@ -29,13 +33,29 @@ public class Game : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        ExpandMap();
+        //ExpandMap();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+    void LateUpdate()
+    {
+        if(GameVars.playerMoney > levels[currentLevel])
+        {
+            currentLevel++;
+            ExpandMap();
+            ProduceShip[] produceShip = spawnBase.GetComponents<ProduceShip>();
+            foreach(ProduceShip script in produceShip)
+            {
+                if(script.enabled == false)
+                {
+                    script.enabled = true;
+                }
+            }  
+        }
     }
 
     void ExpandMap()
@@ -51,13 +71,16 @@ public class Game : MonoBehaviour
         var height = Mathf.Max(hi + hn, gameBounds.size.y);
         gameBounds.offset = new Vector2(Mathf.Sign(nodePos.x) * (width - gameBounds.size.x) / 2, Mathf.Sign(nodePos.y) * (height - gameBounds.size.y) / 2);
         gameBounds.size = new Vector2(width, height);
-        GameVars.maxBounds = new Rect(gameBounds.offset - gameBounds.size / 2, gameBounds.size);     
+        GameVars.maxBounds = new Rect(gameBounds.offset - gameBounds.size / 2, gameBounds.size);
     }
 
     public void OnDrawGizmos()
     {
-        Gizmos.color = new Color(1, 0, 0, 0.2F);
-        Gizmos.DrawCube(gameBounds.offset, gameBounds.size);
+        if(gameBounds != null)
+        {
+            Gizmos.color = new Color(1, 0, 0, 0.2F);
+            Gizmos.DrawCube(gameBounds.offset, gameBounds.size);
+        }
     }
 
     private Vector2 FindClosestNode()
