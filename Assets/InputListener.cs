@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class InputListener : MonoBehaviour {
 
@@ -13,9 +14,17 @@ public class InputListener : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (Input.GetMouseButton(0))
+        {
+            LeftMouseHeld();
+        }
         if (Input.GetMouseButtonUp(0))
         {
             LeftMousePressed();
+        }
+        if (Input.GetMouseButtonUp(1))
+        {
+            RightMousePressed();
         }
         if (Input.GetKeyDown("space")){
             foreach(GameObject wellRadii in GameVars.wellRadii)
@@ -33,9 +42,35 @@ public class InputListener : MonoBehaviour {
         }
     }
 
+    private void LeftMouseHeld()
+    {
+        ShowRadii();
+    }
+
     private void LeftMousePressed()
     {
         SpawnGravityWell();
+    }
+
+
+    private void RightMousePressed()
+    {
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Collider2D collision = Physics2D.OverlapPoint(mousePos);
+        if(collision == null)
+        {
+            return;
+        }
+        if (collision.gameObject.CompareTag(spawnObject.tag))
+        {
+            Destroy(collision.gameObject);
+        }
+    }
+
+
+    private void ShowRadii()
+    {
+
     }
 
     private void SpawnGravityWell()
