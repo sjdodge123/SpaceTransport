@@ -34,7 +34,7 @@ public class TradeShipController : MonoBehaviour
         if (collision.gameObject.CompareTag("RedSpawn"))
         {
             GameVars.playerMoney += carryCapacity;
-            Debug.Log("Money has increased to: " + GameVars.playerMoney);
+            //Debug.Log("Money has increased to: " + GameVars.playerMoney);
         }
         Destroy(gameObject);
 

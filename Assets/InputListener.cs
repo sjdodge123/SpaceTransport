@@ -5,9 +5,12 @@ using System;
 public class InputListener : MonoBehaviour {
 
     public GameObject spawnObject;
+    public ShipController myShip;
     private CircleCollider2D spawnCollider;
     private bool wellVisible = false;
     private int gameBoundsID;
+    private float vertical = 0.0f;
+    private float horizontal = 0.0f;
 
     // Use this for initialization
     void Start () {
@@ -42,6 +45,19 @@ public class InputListener : MonoBehaviour {
                 }
                 wellVisible = !wellVisible;
             }
+        }
+
+
+        vertical = Input.GetAxis("Vertical");
+        horizontal = Input.GetAxis("Horizontal");
+
+        if (vertical != 0)
+        {
+            myShip.ApplyThrust(vertical);
+        }
+        if (horizontal != 0)
+        {
+            myShip.Rotate(horizontal);
         }
     }
 

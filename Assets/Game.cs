@@ -43,18 +43,10 @@ public class Game : MonoBehaviour
     }
     void LateUpdate()
     {
-        if(GameVars.playerMoney > levels[currentLevel])
+        if (GameVars.playerMoney > levels[currentLevel])
         {
             currentLevel++;
             ExpandMap();
-            ProduceShip[] produceShip = spawnBase.GetComponents<ProduceShip>();
-            foreach(ProduceShip script in produceShip)
-            {
-                if(script.enabled == false)
-                {
-                    script.enabled = true;
-                }
-            }  
         }
     }
 
@@ -76,7 +68,7 @@ public class Game : MonoBehaviour
 
     public void OnDrawGizmos()
     {
-        if(gameBounds != null)
+        if (gameBounds != null)
         {
             Gizmos.color = new Color(1, 0, 0, 0.2F);
             Gizmos.DrawCube(gameBounds.offset, gameBounds.size);
@@ -101,6 +93,12 @@ public class Game : MonoBehaviour
 
     public void OnTriggerExit2D(Collider2D collision)
     {
+        if (collision.CompareTag("Player"))
+        {
+            Rigidbody2D shipBody = collision.gameObject.GetComponent<Rigidbody2D>();
+            shipBody.velocity = -shipBody.velocity;
+            return;
+        }
         Destroy(collision.gameObject);
     }
 }

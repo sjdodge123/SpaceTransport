@@ -4,6 +4,7 @@ using System.Collections;
 public class CameraController : MonoBehaviour
 {
     public float scrollSpeed = 1f;
+    public GameObject ship;
     private Camera m_Camera;
     private Vector3 moveDir;
     private bool drag = false;
@@ -32,6 +33,10 @@ public class CameraController : MonoBehaviour
         {
             Camera.main.orthographicSize += scrollSpeed;
         }
+        Vector3 shipLoc = ship.transform.position;
+        shipLoc.z = -10;
+        transform.position = shipLoc;
+        /*
         if (Input.GetMouseButton(2))
         {
             moveDir = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
@@ -49,6 +54,8 @@ public class CameraController : MonoBehaviour
         {
            transform.position = mouseOrigin - moveDir;
         }
+        */
+
     }
 
     public void ExpandCamera(Vector2 newBounds)
